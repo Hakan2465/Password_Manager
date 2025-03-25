@@ -1,0 +1,65 @@
+import json
+import os
+
+# Datei, in der Passwörter gespeichert werden
+PASSWORD_DATEI = "C:\\Users\\chxmp\\python_codes\\Passwort Manager mit JSON\\PWMNGRJSON.JSON"
+
+# Funktion zum Laden der JSON Datei
+def load_passwords():
+    if not os.path.exists(PASSWORD_DATEI):
+        return {}
+    with open(PASSWORD_DATEI, "r") as file:
+        return json.load(file)
+
+# Funktion zum Speichern der Passwörter
+def save_passwords(passwords):
+    with open(PASSWORD_DATEI, "w") as file:
+        json.dump(passwords, file, indent=4)
+
+# Funktion zum Erstellen eines neuen Passworts
+def create_new_password():
+    username = input("Gib deinen Benutzernamen ein: ")
+    password = input("Gib dein neues Passwort ein: ")
+    
+    # Vorhandene Passwörter laden
+    passwords = load_passwords()
+    
+    # Neues Passwort hinzufügen
+    passwords[username] = password
+    
+    # Passwörter speichern
+    save_passwords(passwords)
+    print(f"Neues Passwort für {username} wurde gespeichert.")
+
+# Funktion zum Anzeigen der gespeicherten Passwörter
+def view_passwords():
+    passwords = load_passwords()
+    if not passwords:
+        print("Es wurden keine Passwörter gespeichert.")
+    else:
+        print("Gespeicherte Passwörter:")
+        for username, password in passwords.items():
+            print(f"Benutzername: {username}, Passwort: {password}")
+
+# Benutzerabfrage
+def main():
+    while True:
+        print("\nWas möchtest du tun?")
+        print("1. Neues Passwort anlegen")
+        print("2. Gespeicherte Passwörter ansehen")
+        print("3. Programm beenden")
+
+        choice = input("Bitte wähle eine Option (1, 2, 3): ")
+
+        if choice == '1':
+            create_new_password()
+        elif choice == '2':
+            view_passwords()
+        elif choice == '3':
+            print("Programm beendet.")
+            break
+        else:
+            print("Ungültige Eingabe, bitte versuche es erneut.")
+
+if __name__ == "__main__":
+    main()
